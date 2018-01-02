@@ -42,47 +42,53 @@
 </head>
 <body>
 
-    <section class="container-fluid px-0 pt-5">    
+    <section class="container-fluid px-0 pt-5">
 
-        <div class="col col-sm-8 col-md-5 col-lg-4 mx-auto px-0 mb-5">    
+        <div class="col mx-auto mt-4 ct">
 
-            <form id="signin-form" action="#" method="post" accept-charset="utf-8" validate="true">
-        
-                <div class="form-group mb-2">
-                    <label class="mb-1">Email</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text rounded-0 fa fa-at"></span>
+            <div class="col mx-0 text-left">
+
+                <div class="col col-sm-8 col-md-5 col-lg-4 mx-auto px-0 mb-5">        
+
+                    <form id="signin-form" action="#" method="post" accept-charset="utf-8" validate="true">        
+
+                        <div class="form-group mb-2">
+                            <label class="mb-1">Email</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text rounded-0 fa fa-at"></span>
+                                </div>
+                                <input id="user-email" type="email" autocomplete="user-email" placeholder="Email" class="form-control rounded-0" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required focus>
+                            </div>
                         </div>
-                        <input id="user-email" type="email" autocomplete="user-email" placeholder="Email" class="form-control rounded-0" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required focus>
-                    </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label class="mb-1">Password</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text rounded-0 fa fa-lock"></span>
+                        <div class="form-group mb-2">
+                            <label class="mb-1">Password</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text rounded-0 fa fa-lock"></span>
+                                </div>
+                                <input id="user-password" type="password" autocomplete="current-password" placeholder="Password" class="form-control rounded-0" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}" required>
+                            </div>
                         </div>
-                        <input id="user-password" type="password" autocomplete="current-password" placeholder="Password" class="form-control rounded-0" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}" required>
-                    </div>
-                </div>
-                <div class="checkbox pt-1">
-                    <label>
-                        <input id="remember" type="checkbox" name="remember"> Remember-me
-                    </label>
-                </div>
-                <div class="form-group mb-2">
-                    <div class="input-group">
-                        <div class="submit-slide-button" data-content="slide to submit">
-                            <button data-slide-button="slide" type="submit" class="fa fa-arrow-circle-right"></button>
+                        <div class="checkbox pt-1">
+                            <label>
+                                <input id="remember" type="checkbox" name="remember"> Remember-me
+                            </label>
                         </div>
-                    </div>
+                        <div class="form-group mb-2">
+                            <div class="input-group">
+                                <div class="submit-slide-button" data-content="slide to submit">
+                                    <button data-slide-button="slide" type="submit" class="fa fa-arrow-circle-right"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="./recover" class="float-left mt-4">Recover?</a>        
+
+                    </form>        
+
                 </div>
-                <a href="./recover" class="float-left mt-4">Recover?</a>    
-
-            </form>    
-
-        </div>    
+            </div>
+        </div> 
 
     </section>
 
