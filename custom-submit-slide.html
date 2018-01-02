@@ -111,6 +111,7 @@
 
             // if not slided to end... adjust
             if ( buttonMarginLeft < (containerWidth - buttonWidth) ) {
+                console.log('adjust to "0"')
                 m.style.left = 0
                 m.style.borderLeft = 0
                 m.style.borderRight = '1px solid #ced4da'
@@ -132,9 +133,11 @@
                 window.removeEventListener('click', clickHandler, true)
                 // notify
                 e.srcElement.parentNode.setAttribute('data-content', 'sending form')
+                console.log('ok...send form')
             } else {
                 // prevent check if margin is "negative"
                 if ( buttonMarginLeft < 0 ) {
+                    console.log('pre-negative')
                     m.style.left = 0
                     m.style.borderLeft = 0
                     m.style.borderRight = '1px solid #ced4da'
@@ -142,10 +145,12 @@
                     let calculate = e.x - (containerWidth + buttonWidth )
                     // if is "negative margin"... fix to "0px"
                     if ( calculate < 0 ) {
+                        console.log('negative margin')
                         m.style.left = 0
                         m.style.borderLeft = 0
                         m.style.borderRight = '1px solid #ced4da'
                     } else {
+                        console.log('adjust')
                         m.style.left =  calculate + 'px'
                     }
                 }
