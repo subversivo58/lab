@@ -1,0 +1,156 @@
+<!DOCTYPE htm>
+<html lang="en-US"><head>
+<head>
+    <title>Bootstrap Submit Slide</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Bootstrap v4 Beta-3 Submite Slide Button!">
+    <meta name="keywords" content="fragments, paste, codes, demos, javascript, css, lab">
+    <meta name="author" content="Subversivo58">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet"/>
+    <style type="text/css">
+        .submit-slide-button {
+          width: 100%;
+          transition: opacity 0.5s;
+          border: 1px solid #ced4da;
+          margin: 0 auto;
+          background-color: #28a745;
+          color: white;
+        }
+        .submit-slide-button:before {
+          content: attr(data-content) !important;
+          color: white;/*#8a8a8a;*/
+          position: absolute;
+          left: 35%;
+          top: .5rem;
+          z-index: 1;
+          font-size: 1rem;
+        }
+        .submit-slide-button button {
+          padding: .375rem .75rem;
+          font-size: 1rem;
+          line-height: 1.5;
+          background-color: #e9ecef;
+          position: relative;
+          cursor: pointer;
+          z-index: 1;
+          border-right: 1px solid #ced4da;
+          color: #495057;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="container-fluid px-0 pt-5">    
+
+        <div class="col col-sm-8 col-md-5 col-lg-4 mx-auto px-0 mb-5">    
+
+            <form id="signin-form" action="#" method="post" accept-charset="utf-8" validate="true">
+        
+                <div class="form-group mb-2">
+                    <label class="mb-1">Email</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0 fa fa-at"></span>
+                        </div>
+                        <input id="user-email" type="email" autocomplete="user-email" placeholder="Email" class="form-control rounded-0" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required focus>
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label class="mb-1">Password</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0 fa fa-lock"></span>
+                        </div>
+                        <input id="user-password" type="password" autocomplete="current-password" placeholder="Password" class="form-control rounded-0" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}" required>
+                    </div>
+                </div>
+                <div class="checkbox pt-1">
+                    <label>
+                        <input id="remember" type="checkbox" name="remember"> Remember-me
+                    </label>
+                </div>
+                <div class="form-group mb-2">
+                    <div class="input-group">
+                        <div class="submit-slide-button" data-content="slide to submit">
+                            <button data-slide-button="slide" type="submit" class="fa fa-arrow-circle-right"></button>
+                        </div>
+                    </div>
+                </div>
+                <a href="./recover" class="float-left mt-4">Recover?</a>    
+
+            </form>    
+
+        </div>    
+
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var m = document.querySelector('button[type="submit"][data-slide-button="slide"]')
+        m.addEventListener('click', clickHandler, false)
+        m.addEventListener('mousedown', mouseDown, false)
+        window.addEventListener('mouseup', mouseUp, false)        
+
+        function mouseUp() {
+            window.removeEventListener('mousemove', move, true)
+        }        
+
+        function mouseDown(e) {
+            window.addEventListener('mousemove', move, true)
+        }        
+
+        function clickHandler(e) {
+            e.preventDefault()        
+
+            let buttonWidth = e.toElement.offsetWidth
+            let buttonMarginLeft = e.target.offsetLeft
+            let containerWidth = e.srcElement.parentNode.clientWidth        
+
+            // if not slided to end... adjust
+            if ( buttonMarginLeft < (containerWidth - buttonWidth) ) {
+                m.style.left = 0
+                m.style.borderLeft = 0
+                m.style.borderRight = '1px solid #ced4da'
+            }
+        }        
+
+        function move(e) {
+            let buttonWidth = e.toElement.offsetWidth
+            let buttonMarginLeft = e.target.offsetLeft
+            let containerWidth = e.srcElement.parentNode.clientWidth        
+
+            if ( buttonMarginLeft > (containerWidth - buttonWidth) ) {
+                // fix left
+                m.style.left = (containerWidth - buttonWidth) +1 + 'px'
+                m.style.borderLeft = '1px solid #ced4da'
+                m.style.borderRight = 0
+                // remove handler
+                window.removeEventListener('mousemove', move, true)
+                window.removeEventListener('click', clickHandler, true)
+                // notify
+                e.srcElement.parentNode.setAttribute('data-content', 'sending form')
+            } else {
+                // prevent check if margin is "negative"
+                if ( buttonMarginLeft < 0 ) {
+                    m.style.left = 0
+                    m.style.borderLeft = 0
+                    m.style.borderRight = '1px solid #ced4da'
+                } else {
+                    let calculate = e.x - (containerWidth + buttonWidth )
+                    // if is "negative margin"... fix to "0px"
+                    if ( calculate < 0 ) {
+                        m.style.left = 0
+                        m.style.borderLeft = 0
+                        m.style.borderRight = '1px solid #ced4da'
+                    } else {
+                        m.style.left =  calculate + 'px'
+                    }
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>
