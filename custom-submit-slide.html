@@ -111,9 +111,9 @@
         function clickHandler(e) {
             e.preventDefault()        
 
-            let buttonWidth = e.toElement.offsetWidth
+            let buttonWidth = e.target.offsetWidth
             let buttonMarginLeft = e.target.offsetLeft
-            let containerWidth = e.srcElement.parentNode.clientWidth        
+            let containerWidth = e.target.parentNode.clientWidth        
 
             // if not slided to end... adjust
             if ( buttonMarginLeft < (containerWidth - buttonWidth) ) {
@@ -125,9 +125,9 @@
         }        
 
         function move(e) {
-            let buttonWidth = e.toElement.offsetWidth
+            let buttonWidth = e.target.offsetWidth
             let buttonMarginLeft = e.target.offsetLeft
-            let containerWidth = e.srcElement.parentNode.clientWidth        
+            let containerWidth = e.target.parentNode.clientWidth        
 
             if ( buttonMarginLeft > (containerWidth - buttonWidth) ) {
                 // fix left
@@ -138,7 +138,7 @@
                 window.removeEventListener('mousemove', move, true)
                 window.removeEventListener('click', clickHandler, true)
                 // notify
-                e.srcElement.parentNode.setAttribute('data-content', 'sending form')
+                e.target.parentNode.setAttribute('data-content', 'sending form')
                 console.log('ok...send form')
             } else {
                 // prevent check if margin is "negative"
