@@ -87,7 +87,7 @@
 
         channel.userid = USER_ID
 
-        var SIGNALING_SERVER = 'ws://subversivo58-signaling.herokuapp.com'
+        var SIGNALING_SERVER = 'wss://subversivo58-signaling.herokuapp.com'
         channel.openSignalingChannel = function(config) {
             config.channel = config.channel || this.channel
             var websocket = new WebSocket(SIGNALING_SERVER);
