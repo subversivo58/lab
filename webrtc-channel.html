@@ -1,0 +1,202 @@
+<!DOCTYPE htm>
+<html lang="en-US"><head>
+<head>
+    <title>WebRTC DataChannel</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Send WhatsApp Message !">
+    <meta name="keywords" content="fragments, paste, codes, demos, javascript, css, lab">
+    <meta name="author" content="Subversivo58">
+    <link type="image/png" rel="shortcut icon" href="./labicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+    <!-- CONTAINER -->
+    <section class="container-fluid px-0 pt-5">
+
+        <div class="col col-sm-8 col-md-5 col-lg-4 mx-auto px-0 mb-5">
+            <form accept-charset="utf-8">
+                <div class="form-group mb-2">
+                    <label>Phone (international format)</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0 fa fa-whatsapp"></span>
+                        </div>
+                        <input id="phone" type="phone" class="form-control rounded-0">
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <label>Message</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text rounded-0 fa fa-pencil-square-o"></span>
+                        </div>
+                        <input id="message" type="text" class="form-control rounded-0">
+                    </div>
+
+                </div>
+                <div class="form-group mb-2">
+                    <label>Enviar</label>
+                    <div class="col px-0">
+                        <button id="by-link" type="button" class="btn btn-info">Link</button>
+                        <button id="by-popup" type="button" class="btn btn-info">PopUp</button>
+                     </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdn.webrtc-experiment.com/DataChannel.js"></script>
+    <script>
+
+        let USER_ID = Date.now().toString(35)
+        $('#user-id').append(' ' + USER_ID)
+
+        var EXISTS_CHANNEL = false
+
+        var channel = new DataChannel(/*peerConnectionConfig*/); // DataChannel.js
+
+        channel.direction = 'many-to-many'
+
+        channel.userid = USER_ID
+
+        var SIGNALING_SERVER = 'ws://subversivo58-signaling.herokuapp.com'
+        channel.openSignalingChannel = function(config) {
+            config.channel = config.channel || this.channel
+            var websocket = new WebSocket(SIGNALING_SERVER);
+            websocket.channel = config.channel;
+            websocket.onopen = function() {
+                websocket.push(JSON.stringify({
+                    open: true,
+                    channel: config.channel
+                }))
+                if ( config.callback ) {
+                    config.callback(websocket)
+                }
+            };
+            websocket.onmessage = function(event) {
+                config.onmessage(JSON.parse(event.data));
+            };
+            websocket.push = websocket.send;
+            websocket.send = function(data) {
+                websocket.push(JSON.stringify({
+                    data: data,
+                    channel: config.channel
+                }));
+            };
+        }
+
+        //channel.transmitRoomOnce = true;
+        //channel.autoCloseEntireSession = true;
+
+        // channel.eject(userid);  // throw a user out of your room!
+        // channel.userid = 'predefined-userid';
+        // channel.channels[userid].send(file || data || 'text message');
+
+        /***
+        var channel = new DataChannel('[optional] channel-name');
+        channel.send(file || data || 'text-message');
+
+        // to create/open a new channel
+        channel.open('channel-name');
+
+        // if someone already created a channel; to join it: use "connect" method
+        channel.connect('channel-name');
+        */
+
+        // "ondatachannel" is fired for each new data channel
+        channel.ondatachannel = function(channel00) {
+            EXISTS_CHANNEL = true
+            channel.join(channel00);
+        };
+
+        // a text message or data
+        channel.onmessage = function(data, userid, latency) {
+            appendDIV(data);
+            console.log(userid, 'posted', data);
+            console.log('latency:', latency, 'ms');
+        };
+
+        // on data connection gets open
+        channel.onopen = function() {
+            if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
+            if (document.getElementById('file')) document.getElementById('file').disabled = false;
+            if (document.getElementById('open-channel')) document.getElementById('open-channel').disabled = true;
+        };
+
+        // sending/receiving file(s)
+        channel.autoSaveToDisk = false;
+        channel.onFileProgress = function(packets, uuid) {
+            appendDIV(uuid + ': ' + packets.remaining + '..', 'file', fileProgress);
+        };
+
+        channel.onFileSent = function(file) {
+            appendDIV(file.name + ' sent.', fileProgress);
+        };
+
+        channel.onFileReceived = function(fileName) {
+            appendDIV(fileName + ' received.', fileProgress);
+        };
+
+        document.getElementById('file').onchange = function() {
+            channel.send(this.files[0]);
+        };
+
+        var chatOutput = document.getElementById('chat-output'),
+            fileProgress = document.getElementById('file-progress');
+
+        function appendDIV(data, parent) {
+            var div = document.createElement('div');
+            div.innerHTML = data;
+
+            if (!parent) chatOutput.insertBefore(div, chatOutput.firstChild);
+            else fileProgress.insertBefore(div, fileProgress.firstChild);
+
+            div.tabIndex = 0;
+            div.focus();
+
+            chatInput.focus();
+        }
+
+        var chatInput = document.getElementById('chat-input');
+        chatInput.onkeypress = function(e) {
+            if (e.keyCode !== 13 || !this.value) return;
+            appendDIV(this.value);
+
+            // sending text message
+            channel.send(this.value);
+
+            this.value = '';
+            this.focus();
+        };
+
+        // users presence detection
+        channel.onleave = function(userid) {
+            console.log('A user whose id is ' + userid + ' left you!')
+        };
+
+        // channel.leave( userid ); --- eject a user
+        // channel.leave(); --- leave the room yourself!
+
+        setTimeout(function() {
+            if ( !EXISTS_CHANNEL ) {
+                channel.open();
+            }
+        }, 5000)
+
+        /**
+        channel.direction = 'one-to-one';
+        channel.direction = 'one-to-many';
+        channel.direction = 'many-to-many'; // default
+        */
+
+        // searching for existing channels
+        channel.connect();
+
+    </script>
+
+</body>
+</html>
