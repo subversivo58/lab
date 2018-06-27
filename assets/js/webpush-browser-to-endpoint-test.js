@@ -3,8 +3,8 @@
         //console.log(JSON.stringify(vapidKeys, null, 4));
 
         const ServerKeys = {
-            pubkey:  "BGmLSWt0rGEeC9FzoiXWOC3gxgv3Q-v5qVxVuQjwTgERgrgpTTfrB0s4MP__TYkMWraOK98kZQuf-0m6kHB9Zqw",
-            privkey: "XNXUM0-bkOCQOfjQixVYb98PVSf2udB2g80pDObKQFc"
+            pubkey:  "BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI",
+            privkey: "qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA"
         }
 
 
@@ -32,7 +32,7 @@
 
 'use strict';
 
-const applicationServerPublicKey = 'BGmLSWt0rGEeC9FzoiXWOC3gxgv3Q-v5qVxVuQjwTgERgrgpTTfrB0s4MP__TYkMWraOK98kZQuf-0m6kHB9Zqw';
+const applicationServerPublicKey = 'BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI';
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -75,8 +75,8 @@ function updateSubscriptionOnServer(subscription) {
     if ( subscription ) {
     webpush.setVapidDetails(
        'mailto:lauromoraes.poa.rs@gmail.com',
-       ServerKeys.pubkey,
-       ServerKeys.privkey
+       'BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI',
+       'qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA'
     );
 
     const rawSubscription = JSON.parse(JSON.stringify(subscription))
