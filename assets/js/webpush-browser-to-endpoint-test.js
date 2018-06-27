@@ -96,7 +96,7 @@ function updateSubscriptionOnServer(subscription) {
                 let payload = JSON.stringify({
                     title: 'Subversivo58 Bot',
                     body: 'Thank you for enabling Push Notifications',
-                    icon: './assets/img/icons/wp-success.png' // bot icon
+                    icon: './assets/img/wp-success.png' // bot icon
                 })
                 // define options [in seconds]
                 let options = {
