@@ -191,7 +191,7 @@ function initializeUI() {
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.log('Service Worker and Push is supported');
 
-  navigator.serviceWorker.register('sw.js').then(function(swReg) {
+  navigator.serviceWorker.register('webpush-sw.js').then(function(swReg) {
     console.log('Service Worker is registered', swReg);
 
     swRegistration = swReg;
