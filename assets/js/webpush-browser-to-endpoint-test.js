@@ -95,7 +95,7 @@ function updateSubscriptionOnServer(subscription) {
             TTL: 60 // 1 minute
         }
         // send notification
-        webpush.sendNotification(subscriptionDetails, payload, options).then(response => {
+        webpush.sendNotification(rawSubscription, payload, options).then(response => {
             console.log("Web Push Notification is sended 🚀 !")
         }).catch(e => {
             console.error(e)
