@@ -1,13 +1,15 @@
-        const webpush =  window.WebPushLib;
-        //const vapidKeys = webpush.generateVAPIDKeys();
-        //console.log(JSON.stringify(vapidKeys, null, 4));
+// request WebPushLib form `window` object
+const webpush =  window.WebPushLib;
+/* generate VAPID keys
+ * const vapidKeys = webpush.generateVAPIDKeys();
+ * console.log(JSON.stringify(vapidKeys, null, 4));
+ */
 
-        const ServerKeys = {
-            pubkey:  "BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI",
-            privkey: "qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA"
-        }
-
-
+// from `webpush.generateVAPIDKeys()`
+const ServerKeys = {
+    pubkey:  "BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI",
+    privkey: "qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA"
+}
 
 /*
 *
@@ -72,56 +74,32 @@ function updateBtn() {
 }
 
 function updateSubscriptionOnServer(subscription) {
+    // note: after subscriptio, this demo reload launch new notification
     if ( subscription ) {
-    webpush.setVapidDetails(
-       'mailto:lauromoraes.poa.rs@gmail.com',
-       'BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI',
-       'qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA'
-    );
-
-    const rawSubscription = JSON.parse(JSON.stringify(subscription))
-
-
-         
-
-                let subscriptionDetails = {
-                    endpoint: rawSubscription.endpoint,
-                    keys: {
-                        p256dh: rawSubscription.keys.p256dh,
-                        auth: rawSubscription.keys.auth
-                    }
-                }
-
-
-                let payload = JSON.stringify({
-                    title: 'Subversivo58 Bot',
-                    body: 'Thank you for enabling Push Notifications',
-                    icon: './assets/img/wp-success.png' // bot icon
-                })
-                // define options [in seconds]
-                let options = {
-                    TTL: 60 // 1 minute
-                }
-                // send notification
-                webpush.sendNotification(subscriptionDetails, payload, options).then(response => {
-                    console.log("SEEEEEEEEEEENDEEEEEEEEEEEEEEEEEEEDDDDDDDDDDD!!!!!!!!")
-                }).catch(e => {
-                    console.error(e)
-                })
-
-
-  // TODO: Send subscription to application server
-
-/*  const subscriptionJson = document.querySelector('.js-subscription-json');
-  const subscriptionDetails =
-    document.querySelector('.js-subscription-details');
-
-  if (subscription) {
-    subscriptionJson.textContent = JSON.stringify(subscription);
-    subscriptionDetails.classList.remove('is-invisible');
-  } else {
-    subscriptionDetails.classList.add('is-invisible');
-  }*/
+        // set VAPID details
+        webpush.setVapidDetails(
+           'mailto:yourmail@example.com',
+           'BIuEc1QhsJnVWHBdDRSbWCqtbxPCYuaLh4cyL-6MQvM7x4N7ksUOWHIbg0qXPGChZtyUsBO7xXrU-iCtRfvW0RI',
+           'qON0RY7otTgJ1vhCQSiCbeBN6q82Aak6cQBcnCktmCA'
+        );
+        // get substantial info from subscription data - {Object}
+        const rawSubscription = JSON.parse(JSON.stringify(subscription))
+        
+        let payload = JSON.stringify({
+            title: 'Subversivo58 Bot',
+            body: 'Thank you for enabling Push Notifications',
+            icon: './assets/img/wp-success.png' // bot icon
+        })
+        // define options [in seconds]
+        let options = {
+            TTL: 60 // 1 minute
+        }
+        // send notification
+        webpush.sendNotification(subscriptionDetails, payload, options).then(response => {
+            console.log("Web Push Notification is sended 🚀 !")
+        }).catch(e => {
+            console.error(e)
+        })
    }
 }
 
