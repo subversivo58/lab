@@ -10,7 +10,12 @@ import { IlibJS } from "/assets/js/modules/lib/Exporter.mjs";
 import { PathName } from "/assets/js/modules/functions/Functions.mjs";
 import PolicyHandler from "/assets/js/modules/models/PolicyHandler.mjs";
 import Templates from "/assets/js/modules/models/Templates.mjs";
+import "/assets/js/modules/vendor/bootstrap-native.mjs";
 
+import {
+    DrawerEvents,
+    SlideMenus
+} from "/assets/js/modules/models/UIHandler.mjs";
 // Carrega as configurações do repositório principal.
 const settingsResponse = await fetch(
     new URL("../../../config/settings.json", import.meta.url),
