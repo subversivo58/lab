@@ -1,12 +1,13 @@
+
 <!-- FIXED NAVBAR -->
 <nav id="navbar-fixed" class="navbar navbar-expand-md navbar-light fixed-top py-1 bg-white anchor-link" role="navigation">
 
     <!-- DESKTOP LOGO -->
-    <a class="navbar-brand d-none d-md-flex" href="./">
+    <a class="navbar-brand d-none d-md-flex" href="/">
         <picture>
             <img alt="Brand"
-                 src="./assets/media/image/1x1.gif"
-                 data-src="./assets/media/image/logos/site-logo-avatar@500x100.png"
+                 src="/assets/media/image/1x1.gif"
+                 data-src="/assets/media/image/logos/site-logo-avatar@500x100.png"
                  data-lazy-target
                  width="120px"
                  height="30px"
@@ -15,11 +16,11 @@
     </a>
 
     <!-- MOBILE LOGO -->
-    <a class="navbar-brand d-md-none" href="./">
+    <a class="navbar-brand d-md-none" href="/">
         <picture>
             <img alt="Brand"
-                 src="./assets/media/image/1x1.gif"
-                 data-src="./assets/media/image/logos/site-logo-icon@150x150.webp"
+                 src="/assets/media/image/1x1.gif"
+                 data-src="/assets/media/image/logos/site-logo-icon@150x150.webp"
                  data-lazy-target
                  width="30px"
                  height="30px"
@@ -34,37 +35,37 @@
         <ul class="navbar-nav flex-row mr-auto">
 
             <li class="nav-item">
-                <a href="./blog.html"
+                <a href="/blog.html"
                    data-i18n-html="navbar.blog"
                    class="i18n nav-link contrast tc"></a>
             </li>
 
             <li class="nav-item">
-                <a href="./about.html"
+                <a href="/about.html"
                    data-i18n-html="navbar.about"
                    class="i18n nav-link contrast tc"></a>
             </li>
 
             <li class="nav-item nav-item-lab">
-                <a href="./lab/"
+                <a href="/lab/"
                    data-i18n-html="navbar.lab"
                    class="i18n nav-link contrast tc"></a>
             </li>
 
             <li class="nav-item">
-                <a href="./dpo.html"
+                <a href="/dpo.html"
                    data-i18n-html="navbar.dpo"
                    class="i18n nav-link contrast tc"></a>
             </li>
-           
+
             <li class="nav-item nav-item-donations">
-                <a href="./donations.html"
+                <a href="/donations.html"
                    data-i18n-html="navbar.donations"
                    class="i18n nav-link contrast tc"></a>
             </li>
 
             <li class="nav-item nav-item-policies">
-                <a href="./policy.html"
+                <a href="/policy.html"
                    data-i18n-html="navbar.policies"
                    class="i18n nav-link contrast tc"></a>
             </li>
@@ -77,8 +78,8 @@
             <picture id="drawer-menu-2"
                      class="navbar-brand py-0">
                 <img alt="Brand"
-                     src="./assets/media/image/1x1.gif"
-                     data-src="./assets/media/image/icons/animated-cube.webp"
+                     src="/assets/media/image/1x1.gif"
+                     data-src="/assets/media/image/icons/animated-cube.webp"
                      data-lazy-target
                      width="26px"
                      height="26px"
@@ -98,8 +99,8 @@
                 <picture id="drawer-menu-1"
                          class="navbar-brand py-0">
                     <img alt="Brand"
-                         src="./assets/media/image/1x1.gif"
-                         data-src="./assets/media/image/icons/animated-cube.webp"
+                         src="/assets/media/image/1x1.gif"
+                         data-src="/assets/media/image/icons/animated-cube.webp"
                          data-lazy-target
                          width="26px"
                          height="26px"
