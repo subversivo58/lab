@@ -61,8 +61,7 @@ const SetupDOMReady = async () => {
             rule: [],
             replacement: []
         },
-        i18n,
-        "/lab/"
+        i18n
     );
 
     // Importa os templates correspondentes à rota atual.
