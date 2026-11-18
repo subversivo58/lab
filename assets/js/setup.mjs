@@ -71,7 +71,9 @@ const SetupDOMReady = async () => {
 
     // Importa os templates correspondentes à rota atual.
     await TemplatesReady.import;
-
+    // Inicialização dos componentes da interface.
+    DrawerEvents();
+    SlideMenus();
     // Rotas do Lab.
     switch (route) {
         case "index":
