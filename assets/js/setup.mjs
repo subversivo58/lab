@@ -17,6 +17,7 @@ import {
     DrawerEvents,
     SlideMenus
 } from "/assets/js/modules/models/UIHandler.mjs";
+import { renderFooterNews } from "/assets/js/modules/models/RecentPosts.mjs";
 // Carrega as configurações do repositório principal.
 const settingsResponse = await fetch(
     new URL("../../../config/settings.json", import.meta.url),
@@ -75,7 +76,7 @@ const SetupDOMReady = async () => {
     // Importa os templates correspondentes à rota atual.
     await TemplatesReady.import;
     // Observa elementos que utilizam carregamento lazy-load.
-    lazyLoad.observe([...document.querySelectorAll("[data-lazy-target]")]);  
+    lazyLoad.observe([...document.querySelectorAll("[data-lazy-target]")]);
     // Inicialização dos componentes da interface.
     DrawerEvents();
     SlideMenus();
@@ -89,7 +90,12 @@ const SetupDOMReady = async () => {
             // Outras páginas do Lab.
             break;
     }
-
+    // Rodapé: últimas postagens.
+    renderFooterNews(
+        settings,
+        document.getElementById("dinamic-footer-news"),
+        PolicyHandler.language
+    );
     // Aplica as traduções iniciais e observa alterações futuras no DOM.
     i18n.transcript();
     i18n.observe(document);
