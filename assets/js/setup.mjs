@@ -1,4 +1,3 @@
-
 /**
  * @license The MIT License (MIT) - https://github.com/subversivo58/subversivo58.github.io/blob/main/LICENSE
  * @copyright Copyright (c) 2010-2026 Lauro Moraes - https://github.com/subversivo58
@@ -18,6 +17,8 @@ import {
 
 import {
     PathName,
+    Redirect,
+    AnchorScrool,
     ColorPallet,
     PressHoldCollorCharger,
     SoundPlay
@@ -87,10 +88,7 @@ try {
         stores: settings.database.indexed.map(item => item.tbn)
     });
 } catch (error) {
-    console.error(
-        "[LAB SETUP]: IndexedDB initialization failed",
-        error
-    );
+    console.error("[LAB SETUP]: IndexedDB initialization failed", error);
 }
 
 // Gerenciador da política de armazenamento.
@@ -183,19 +181,14 @@ const setRating = value => {
 };
 
 document.addEventListener("click", event => {
-    const star = event.target.closest(
-        "#drawer-feedback-block .star-rating"
-    );
+    const star = event.target.closest("#drawer-feedback-block .star-rating");
 
     if (!star) return;
 
     const value = Number(star.dataset.starValue);
     const input = document.getElementById("feedback-rating");
 
-    const current =
-        input && !input.disabled
-            ? Number(input.value)
-            : 0;
+    const current = input && !input.disabled ? Number(input.value) : 0;
 
     setRating(current === value ? 0 : value);
 });
@@ -259,14 +252,16 @@ document.addEventListener("submit", async event => {
 // ---------------------------------------------------------
 
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/ServiceWorker.mjs", {
-        type: "module"
-    }).catch(error => {
-        console.error(
-            "[LAB SETUP]: Service Worker registration failed",
-            error
-        );
-    });
+    navigator.serviceWorker
+        .register("/ServiceWorker.mjs", {
+            type: "module"
+        })
+        .catch(error => {
+            console.error(
+                "[LAB SETUP]: Service Worker registration failed",
+                error
+            );
+        });
 }
 
 // ---------------------------------------------------------
@@ -318,9 +313,7 @@ const SetupDOMReady = async () => {
                 settings.source.version.canonical,
 
                 function () {
-                    return route === "policy"
-                        ? 'disabled="disabled"'
-                        : "";
+                    return route === "policy" ? 'disabled="disabled"' : "";
                 }
             ]
         },
@@ -348,10 +341,7 @@ const SetupDOMReady = async () => {
 
         const option = event.target.closest(".change-language");
 
-        if (
-            !option ||
-            !settings.source.language.includes(option.id)
-        ) {
+        if (!option || !settings.source.language.includes(option.id)) {
             return;
         }
 
@@ -427,9 +417,7 @@ const SetupDOMReady = async () => {
 
         if (!element) return;
 
-        const indicator = element.querySelector(
-            ".preference-indicator"
-        );
+        const indicator = element.querySelector(".preference-indicator");
 
         if (!indicator) return;
 
@@ -463,10 +451,7 @@ const SetupDOMReady = async () => {
 
         userPreferences[key] = !userPreferences[key];
 
-        renderPreferenceSwitch(
-            element.id,
-            userPreferences[key]
-        );
+        renderPreferenceSwitch(element.id, userPreferences[key]);
 
         if (!DBMethods) {
             console.error(
@@ -546,9 +531,7 @@ const SetupDOMReady = async () => {
         );
     };
 
-    const clearAllButton = document.getElementById(
-        "clear-all-data-storage"
-    );
+    const clearAllButton = document.getElementById("clear-all-data-storage");
 
     if (clearAllButton) {
         bindClearAllButton(clearAllButton);
@@ -556,9 +539,7 @@ const SetupDOMReady = async () => {
 
     // Observa os templates e modais adicionados dinamicamente.
     const clearButtonObserver = new MutationObserver(() => {
-        const button = document.getElementById(
-            "clear-all-data-storage"
-        );
+        const button = document.getElementById("clear-all-data-storage");
 
         if (button) {
             bindClearAllButton(button);
@@ -597,9 +578,7 @@ const SetupDOMReady = async () => {
     // LAZY-LOAD E INTERFACE
     // -----------------------------------------------------
 
-    lazyLoad.observe([
-        ...document.querySelectorAll("[data-lazy-target]")
-    ]);
+    lazyLoad.observe([...document.querySelectorAll("[data-lazy-target]")]);
 
     // Permissões do navegador e notificações.
     DrawerEvents(BrowserPermissions, Notify);
@@ -633,6 +612,69 @@ const SetupDOMReady = async () => {
         document.getElementById("dinamic-footer-news"),
         PolicyHandler.language
     );
+
+    // -----------------------------------------------------
+    // AVISO DA POLÍTICA DE ARMAZENAMENTO
+    // Mantém o comportamento original do Blog.
+    // -----------------------------------------------------
+
+    const DataStoragePolicy = () => {
+        AWCookies.get("__DSPolicy__").catch(() => {
+            const DSNotify = new NotifyJS({
+                permissions: BrowserPermissions,
+                watchPermissions: false
+            });
+
+            DSNotify.on("click", data => {
+                if ("action" in data) {
+                    switch (data.action) {
+                        case "cookie-agree":
+                            Redirect("/policy.html#cookie-agree");
+                            break;
+                        case "cookie-policy":
+                            Redirect("/policy.html#policy-general");
+                            break;
+                        case "terms-policy":
+                            Redirect("/policy.html#policy-terms");
+                            break;
+                    }
+                }
+            });
+
+            const NotifyI18nStorage = i18n.dictionary().notify.storage;
+            const DSNoticeTag = "ds-policy-notice";
+
+            DSNotify.create({
+                title: NotifyI18nStorage.title,
+                body: NotifyI18nStorage.body,
+                badage: "/assets/media/image/icons/badage-monochrome.webp",
+                actions: NotifyI18nStorage.actions,
+                tag: DSNoticeTag,
+                bootstrap: {
+                    pinned: false
+                }
+            }).show();
+
+            setTimeout(() => {
+                const closeButton = document.querySelector(
+                    `small[data-target="${DSNoticeTag}"]`
+                );
+
+                if (closeButton) closeButton.click();
+            }, 15000);
+        });
+    };
+
+    if (route !== "policy" && route !== "nocookie") {
+        DataStoragePolicy();
+    }
+
+    // -----------------------------------------------------
+    // ROLAGEM SUAVE PARA ÂNCORAS E BOTÃO DE RETORNO AO TOPO
+    // Mantém integralmente o comportamento original do Blog.
+    // -----------------------------------------------------
+
+    AnchorScrool();
 
     // -----------------------------------------------------
     // TRADUÇÕES
