@@ -9,6 +9,7 @@
 import { IlibJS } from "/assets/js/modules/lib/Exporter.mjs";
 import { PathName } from "/assets/js/modules/functions/Functions.mjs";
 import PolicyHandler from "/assets/js/modules/models/PolicyHandler.mjs";
+import LazyLoad from "/assets/js/modules/lib/LazyLoad.mjs";
 import Templates from "/assets/js/modules/models/Templates.mjs";
 import "/assets/js/modules/vendor/bootstrap-native.mjs";
 
@@ -37,6 +38,8 @@ const i18n = new IlibJS("i18n");
 
 // Inicialização do Lab.
 const SetupDOMReady = async () => {
+    // Instância do carregador de imagens lazy-load.
+    const lazyLoad = new LazyLoad("undefined");
     // Resolve a rota relativa ao Lab, preservando os subdiretórios.
     const fullRoute = PathName(true);
 
@@ -71,6 +74,8 @@ const SetupDOMReady = async () => {
 
     // Importa os templates correspondentes à rota atual.
     await TemplatesReady.import;
+    // Observa elementos que utilizam carregamento lazy-load.
+    lazyLoad.observe([...document.querySelectorAll("[data-lazy-target]")]);  
     // Inicialização dos componentes da interface.
     DrawerEvents();
     SlideMenus();
